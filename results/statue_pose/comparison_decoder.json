@@ -11,15 +11,15 @@
     "note": "auto"
   },
   {
-    "method": "DA3_ray",
+    "method": "DA3",
     "N": 12,
     "matched": "12/12",
-    "trans_rmse": 6.670250983659072,
-    "trans_rmse_pct": 28.755371787559458,
-    "rot_mean_deg": 171.19557474852934,
-    "rot_median_deg": 170.9867443325433,
-    "time_s": 1.196,
-    "note": "ray"
+    "trans_rmse": 0.20129639671655555,
+    "trans_rmse_pct": 0.8677863458603061,
+    "rot_mean_deg": 0.361165730600179,
+    "rot_median_deg": 0.3545974424733296,
+    "time_s": 1.703,
+    "note": "camera_decoder"
   },
   {
     "method": "COLMAP",
@@ -33,15 +33,15 @@
     "note": "auto"
   },
   {
-    "method": "DA3_ray",
+    "method": "DA3",
     "N": 24,
     "matched": "24/24",
-    "trans_rmse": 7.25311529473434,
-    "trans_rmse_pct": 31.268092824253465,
-    "rot_mean_deg": 170.8980505071696,
-    "rot_median_deg": 171.16594977291524,
-    "time_s": 1.737,
-    "note": "ray"
+    "trans_rmse": 0.12787200888404054,
+    "trans_rmse_pct": 0.5512546927680391,
+    "rot_mean_deg": 0.36263135770798316,
+    "rot_median_deg": 0.2623505329351783,
+    "time_s": 1.532,
+    "note": "camera_decoder"
   },
   {
     "method": "COLMAP",
@@ -55,14 +55,14 @@
     "note": "auto"
   },
   {
-    "method": "DA3_ray",
+    "method": "DA3",
     "N": 50,
     "matched": "50/50",
-    "trans_rmse": 7.111836179188688,
-    "trans_rmse_pct": 30.659040255874064,
-    "rot_mean_deg": 170.50503625755803,
-    "rot_median_deg": 170.20347264499918,
-    "time_s": 3.041,
-    "note": "ray"
+    "trans_rmse": 0.11274111464651063,
+    "trans_rmse_pct": 0.48602558964368614,
+    "rot_mean_deg": 0.2921911536013274,
+    "rot_median_deg": 0.257553562211594,
+    "time_s": 2.727,
+    "note": "camera_decoder"
   }
 ]

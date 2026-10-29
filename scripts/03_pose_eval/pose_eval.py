@@ -231,10 +231,9 @@ def load_da3_poses(npy_path, names_txt=None, source="camera_decoder",
     """
     Load DA3 predicted extrinsics saved as a .npy of shape (N,4,4) or (N,3,4).
 
-    DA3 stores poses differently per path (see da3.py):
-      - camera_decoder (default): output.extrinsics = affine_inverse(c2w) => it is W2C
-      - ray (use_ray_pose=True) : output.extrinsics is already C2W
-    Pass source accordingly so we return C2W consistently.
+    DA3's Prediction.extrinsics is world-to-camera for both pose heads
+    (camera_decoder and ray); it is inverted to C2W here. `source` is kept
+    only as a label.
 
     names_txt: optional text file, one image id per line, SAME order as npy rows.
     to_opencv_flip: if DA3's camera frame differs from GT (rotation error ~180
@@ -249,10 +248,10 @@ def load_da3_poses(npy_path, names_txt=None, source="camera_decoder",
     for M in ext:
         if M.shape[0] == 3:                      # (3,4) -> (4,4)
             M = np.vstack([M, [0, 0, 0, 1.0]])
-        if source == "camera_decoder":           # stored as W2C -> invert
-            Rc2w, center = w2c_to_c2w(M[:3, :3], M[:3, 3])
-        else:                                    # ray path: already C2W
-            Rc2w, center = M[:3, :3], M[:3, 3]
+        # Prediction.extrinsics is W2C for BOTH heads: the ray path's
+        # "w2c -> c2w" comment in da3.py is undone by the API's normalization.
+        # Reading the ray output as C2W was the cause of the ~171 deg error.
+        Rc2w, center = w2c_to_c2w(M[:3, :3], M[:3, 3])
         if to_opencv_flip is not None:
             Rc2w = Rc2w @ to_opencv_flip
         R.append(Rc2w); C.append(center)

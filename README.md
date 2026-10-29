@@ -16,6 +16,8 @@
 
 test PSNR, 30k step, `test_every=8` (Truck 32장, Train 38장 held-out).
 
+정답 카메라가 있는 Statue 장면에서는 DA3 입력으로 학습한 3DGS가 COLMAP보다 테스트 PSNR이 1.5–3.2 dB 높았습니다. 포즈는 COLMAP이 더 정확하지만, DA3 초기 포인트가 배경까지 덮기 때문으로 보입니다. → [Statue 결과](#statue-colmap-vs-da3-디코더-방식-vs-da3-레이-방식)
+
 ---
 
 ## 데모 영상
@@ -86,6 +88,81 @@ gsplat의 test view #5를 각 설정으로 렌더링한 결과입니다(30k step
 
 ---
 
+## Statue: COLMAP vs DA3 디코더 방식 vs DA3 레이 방식
+
+정답 카메라가 있는 합성 장면 Statue(1920×1080, 100장)에서, 학습 이미지 수(12 · 24 · 50장)마다 세 가지 입력으로 gsplat을 학습했습니다. 학습에 쓰지 않은 나머지 이미지(88 · 76 · 50장)가 모두 테스트 시점입니다.
+
+| 입력 | 카메라 내부 파라미터 | 포즈 | 초기 포인트 |
+|---|---|---|---|
+| COLMAP | COLMAP | COLMAP | COLMAP sparse points |
+| DA3 디코더 방식 | DA3 | DA3 디코더 | DA3 depth를 펼친 점에서 균일 샘플 |
+| DA3 레이 방식 | DA3 | DA3 레이 | DA3 depth를 펼친 점에서 균일 샘플 |
+
+- 초기 포인트 수는 같은 N의 COLMAP 포인트 수와 맞췄습니다(12장 1,151개 · 24장 6,477개 · 50장 15,081개).
+- 학습 설정은 모두 같습니다: gsplat `default`, 30k step, `data_factor 1`, `pose_opt` 꺼짐.
+- **테스트 시점의 포즈**: 각 방법은 자기만의 좌표계를 가지므로, 정답 포즈를 학습 카메라로 구한 Sim(3)로 각 방법의 좌표계에 옮겨서 렌더링했습니다(아래 표의 "정렬만").
+- **테스트 시점 포즈 보정**: 이 정렬에는 학습 포즈의 오차가 그대로 남습니다. 그래서 pose-free 3DGS 논문(예: InstantSplat)처럼 Gaussian은 고정하고 각 테스트 카메라의 포즈만 300회 최적화한 뒤 다시 평가했습니다(아래 표의 "포즈 보정 후"). 세 방법 모두 똑같이 적용했습니다.
+
+### 렌더링 영상 (24장 · 50장)
+
+왼쪽부터 **COLMAP · DA3 디코더 방식 · DA3 레이 방식**. 궤적은 각 모델 좌표계의 카메라 위치로 gsplat이 만든 것이라, 세 영상의 프레임이 정확히 같은 시점은 아닙니다.
+
+**24장**
+
+![Statue 24 views: COLMAP / DA3 decoder / DA3 ray](assets/statue/statue_24_3way.gif)
+
+**50장**
+
+![Statue 50 views: COLMAP / DA3 decoder / DA3 ray](assets/statue/statue_50_3way.gif)
+
+### 같은 시점에서 본 결과
+
+모든 N에서 테스트 시점인 #0026, #0051을 포즈 보정 후 렌더링한 결과입니다.
+
+**테스트 시점 #0026**
+
+| 이미지 수 | 정답 (GT) | COLMAP | DA3 디코더 방식 | DA3 레이 방식 |
+|---|:---:|:---:|:---:|:---:|
+| 12장 | ![](assets/statue/statue_0026_gt.jpg) | ![](assets/statue/statue_0026_colmap_12.jpg) | ![](assets/statue/statue_0026_da3_decoder_12.jpg) | ![](assets/statue/statue_0026_da3_ray_12.jpg) |
+| 24장 | ![](assets/statue/statue_0026_gt.jpg) | ![](assets/statue/statue_0026_colmap_24.jpg) | ![](assets/statue/statue_0026_da3_decoder_24.jpg) | ![](assets/statue/statue_0026_da3_ray_24.jpg) |
+| 50장 | ![](assets/statue/statue_0026_gt.jpg) | ![](assets/statue/statue_0026_colmap_50.jpg) | ![](assets/statue/statue_0026_da3_decoder_50.jpg) | ![](assets/statue/statue_0026_da3_ray_50.jpg) |
+
+**테스트 시점 #0051**
+
+| 이미지 수 | 정답 (GT) | COLMAP | DA3 디코더 방식 | DA3 레이 방식 |
+|---|:---:|:---:|:---:|:---:|
+| 12장 | ![](assets/statue/statue_0051_gt.jpg) | ![](assets/statue/statue_0051_colmap_12.jpg) | ![](assets/statue/statue_0051_da3_decoder_12.jpg) | ![](assets/statue/statue_0051_da3_ray_12.jpg) |
+| 24장 | ![](assets/statue/statue_0051_gt.jpg) | ![](assets/statue/statue_0051_colmap_24.jpg) | ![](assets/statue/statue_0051_da3_decoder_24.jpg) | ![](assets/statue/statue_0051_da3_ray_24.jpg) |
+| 50장 | ![](assets/statue/statue_0051_gt.jpg) | ![](assets/statue/statue_0051_colmap_50.jpg) | ![](assets/statue/statue_0051_da3_decoder_50.jpg) | ![](assets/statue/statue_0051_da3_ray_50.jpg) |
+
+### 정량 결과
+
+테스트 시점 전체 평균입니다. 굵은 글씨는 같은 N에서 가장 좋은 값입니다.
+
+| 이미지 수 | 방법 | 회전 오차 (°) | PSNR ↑ 정렬만 | SSIM ↑ 정렬만 | LPIPS ↓ 정렬만 | **PSNR ↑ 포즈 보정 후** | **SSIM ↑ 포즈 보정 후** | **LPIPS ↓ 포즈 보정 후** | Gaussians |
+|---|---|---:|---:|---:|---:|---:|---:|---:|---:|
+| 12 | COLMAP | **0.05** | 20.05 | **0.734** | 0.585 | 20.89 | **0.730** | 0.580 | 434K |
+| 12 | DA3 디코더 | 0.36 | 20.81 | 0.718 | 0.578 | 22.05 | 0.727 | 0.570 | 112K |
+| 12 | DA3 레이 | 0.48 | **20.88** | 0.717 | **0.566** | **22.37** | 0.728 | **0.557** | 231K |
+| 24 | COLMAP | **0.03** | 20.83 | **0.751** | 0.572 | 22.12 | 0.743 | 0.563 | 168K |
+| 24 | DA3 디코더 | 0.36 | **22.76** | 0.729 | 0.560 | 24.81 | 0.745 | 0.539 | 109K |
+| 24 | DA3 레이 | 0.39 | 22.66 | 0.725 | **0.551** | **25.27** | **0.754** | **0.523** | 133K |
+| 50 | COLMAP | **0.04** | 24.44 | **0.773** | 0.526 | 25.45 | 0.768 | 0.502 | 148K |
+| 50 | DA3 디코더 | 0.29 | **24.61** | 0.735 | 0.519 | 27.93 | 0.762 | 0.502 | 103K |
+| 50 | DA3 레이 | 0.33 | 24.05 | 0.729 | **0.506** | **28.43** | **0.775** | **0.470** | 154K |
+
+### 해석
+
+- **포즈는 COLMAP이 더 정확하지만, 렌더링 품질은 DA3 입력이 같거나 더 좋았습니다.** 포즈 보정 후 PSNR은 DA3 레이 방식이 COLMAP보다 1.5 dB(12장), 3.2 dB(24장), 3.0 dB(50장) 높습니다.
+- **차이의 주된 원인은 초기 포인트의 위치로 보입니다.** 포인트 수는 같아도 COLMAP 포인트는 조각상 주변에 몰려 있고(카메라 반경의 절반 이내 86–91%, 카메라 원 밖 0%), DA3 포인트는 바다·하늘 같은 배경까지 퍼져 있습니다(카메라 원 밖 약 48%). 12장·50장 데이터로 측정한 값입니다. 질감이 거의 없는 바다와 하늘에서는 COLMAP이 특징점을 찾지 못하기 때문입니다. 위 비교 이미지에서도 COLMAP 결과는 배경이 흐릿하게 뭉개지고, 12장에서는 조각상까지 무너집니다.
+- **포즈 오차의 영향은 "정렬만"과 "포즈 보정 후"의 차이에서 보입니다.** 포즈 보정으로 오르는 폭이 COLMAP은 0.8–1.3 dB, DA3는 1.2–4.4 dB로, 오차가 더 큰 DA3에서 더 큽니다. 정렬만 했을 때 SSIM이 COLMAP에서 가장 높은 것도 같은 이유로 보입니다.
+- **DA3 디코더 방식과 레이 방식은 비슷합니다.** 포즈 보정 후에는 레이 방식이 세 경우 모두 0.3–0.5 dB 높았습니다.
+- 조각상 하나에 넓은 배경이 있는 장면이라 LPIPS가 전체적으로 높습니다(0.47–0.59). 이 결론이 다른 장면에서도 성립하는지는 확인하지 않았습니다.
+
+원본 수치: [`results/statue_3dgs/`](results/statue_3dgs) (`val_step29999.json`: gsplat 자체 평가, `eval_tto.json`: 정렬만 / 포즈 보정 후 결과와 시점별 값, `pose_eval.json`: 학습 카메라 포즈 오차)
+
+---
+
 ## 실험 과정
 
 ### 1. 환경 구축과 기준선 (7/22–23)
@@ -113,19 +190,28 @@ DA3 depth를 뷰별로 unprojection해 COLMAP과 같은 개수의 포인트를 �
 ### 5. 완전한 COLMAP-free 파이프라인 (8/6–8/7)
 intrinsic까지 DA3 예측값을 원본 해상도로 환산해 쓰고, Sim(3) 정렬 없이 DA3 좌표계 그대로 `cameras.bin`, `images.bin`, `points3D.bin`을 직접 작성했습니다. Train 장면에서도 같은 방식으로 재현했습니다. → `make_da3_full_colmapfree.py`, `make_da3_full_colmapfree_train.py` (설정 ⑤)
 
-### 6. 포즈 정확도와 속도 비교, Statue (8/27–28)
-GT 카메라가 있는 합성 장면 Statue에서 12 · 24 · 50장으로 COLMAP(pycolmap)과 DA3 포즈를 비교했습니다. GT와는 Umeyama로 정렬했습니다.
+### 6. 포즈 정확도와 속도 비교, Statue (8/27–28, 10/30 수정)
+정답(GT) 카메라가 있는 합성 장면 Statue에서 12 · 24 · 50장으로 COLMAP(pycolmap)과 DA3의 두 가지 포즈 추정 방식을 비교했습니다. DA3는 카메라 디코더로 포즈를 바로 내는 방식(이하 **디코더 방식**)과, 픽셀별 광선(ray) 예측에서 포즈를 계산하는 방식(`use_ray_pose`, 이하 **레이 방식**)이 있습니다. 정답과는 Umeyama Sim(3)로 정렬했습니다.
 
-| 방법 | 뷰 | 시간 (s) | 위치 RMSE (% of scene) | 회전 오차 평균 (°) |
+| 방법 | 뷰 | 시간 (s) | 위치 RMSE (장면 반경 대비 %) | 회전 오차 평균 (°) |
 |---|---:|---:|---:|---:|
-| COLMAP | 12 | 2.80 | 0.08 | 0.05 |
-| DA3 (ray) | 12 | 1.20 | 28.76 | 171.20 |
-| COLMAP | 24 | 7.35 | 0.06 | 0.03 |
-| DA3 (ray) | 24 | 1.74 | 31.27 | 170.90 |
-| COLMAP | 50 | 27.52 | 0.09 | 0.04 |
-| DA3 (ray) | 50 | 3.04 | 30.66 | 170.51 |
+| COLMAP | 12 | 2.80 | **0.08** | **0.05** |
+| DA3 디코더 | 12 | 1.70 | 0.87 | 0.36 |
+| DA3 레이 | 12 | **1.20** | 1.20 | 0.48 |
+| COLMAP | 24 | 7.35 | **0.06** | **0.03** |
+| DA3 디코더 | 24 | **1.53** | 0.55 | 0.36 |
+| DA3 레이 | 24 | 1.74 | 0.47 | 0.40 |
+| COLMAP | 50 | 27.52 | **0.09** | **0.04** |
+| DA3 디코더 | 50 | **2.73** | 0.49 | 0.29 |
+| DA3 레이 | 50 | 3.04 | 0.38 | 0.33 |
 
-DA3는 뷰가 늘어도 수 초 안에 끝나지만, 회전 오차가 약 171°로 일정하게 나와 GT와의 좌표계 정렬(축 방향 규약)에 문제가 있는 것으로 보입니다. **아직 해결하지 못한 상태**입니다. → `scripts/03_pose_eval/`, 결과 [`results/statue_pose/`](results/statue_pose)
+- DA3는 50장에서도 3초 안에 끝나 COLMAP보다 약 10배 빠르고, 포즈 오차는 COLMAP보다 약 10배 큽니다(회전 0.3–0.5°). 디코더 방식과 레이 방식은 비슷한 수준입니다.
+- **처음 기록했던 레이 방식의 회전 오차 171°는 평가 코드의 버그였습니다.** DA3의 `Prediction.extrinsics`는 두 방식 모두 월드→카메라(W2C) 행렬인데, `pose_eval.py`가 레이 방식 결과만 카메라→월드(C2W)로 읽고 있었습니다. 두 방식의 원본 행렬끼리 직접 비교하면 회전 차이가 0.35–0.47°로 거의 같습니다. 수정한 코드: [`scripts/03_pose_eval/pose_eval.py`](scripts/03_pose_eval/pose_eval.py)
+
+→ `scripts/03_pose_eval/`, 결과 [`results/statue_pose/`](results/statue_pose)
+
+### 7. 포즈 출처별 3DGS 학습 비교, Statue (10/30)
+6번에서 비교한 세 가지 포즈로 실제 3DGS를 학습하고 학습에 쓰지 않은 시점에서 렌더링 품질을 비교했습니다. 결과는 [아래 Statue 절](#statue-colmap-vs-da3-디코더-방식-vs-da3-레이-방식)에 정리했습니다.
 
 ---
 
@@ -175,19 +261,41 @@ CUDA_VISIBLE_DEVICES=0 python simple_trainer.py default \
 
 `extract_da3_geometry.py`는 이미지 목록을 읽을 때와 이전 단계 비교용으로 원본 데이터셋의 COLMAP 폴더를 읽습니다. 하지만 `make_da3_full_colmapfree.py`가 쓰는 카메라·포인트에는 COLMAP 값이 들어가지 않습니다.
 
+### Statue: 세 가지 입력으로 학습 · 평가
+
+```bash
+# [da3 컨테이너] DA3 디코더/레이 방식으로 train_12/24/50 추론 → depth, K, 포즈 저장
+python scripts/04_statue_3dgs/da3_infer.py
+
+# [호스트] DA3 결과를 gsplat 쪽으로 복사
+cp ~/da3_workspace/exp/Statue/fs/da3full/*.npz ~/gsplat_workspace/statue3dgs/da3/
+
+# [gsplat 컨테이너] 9개 데이터셋(COLMAP/디코더/레이 × 12/24/50) 만들기
+#   학습 이미지 + 정답 포즈를 Sim(3)로 옮긴 테스트 이미지, split.json 포함
+python scripts/04_statue_3dgs/build_datasets.py
+
+# [gsplat 컨테이너, gsplat/examples에서] split.json대로 학습 (simple_trainer 그대로 사용)
+bash scripts/04_statue_3dgs/run_all.sh 0 colmap_12 da3_decoder_12 da3_ray_12
+
+# [gsplat 컨테이너, gsplat/examples에서] 정렬만 / 테스트 시점 포즈 보정 후 평가
+python scripts/04_statue_3dgs/eval_tto.py da3_ray_12
+```
+
 ## 레포 구조
 
 ```
-assets/                 README용 GIF, 비교 이미지(test view #5), mp4
+assets/                 README용 GIF, 비교 이미지, mp4 (statue/: Statue 실험)
 patches/                Depth-Anything-3 로컬 수정 사항
 results/
   gsplat/<run>/         각 학습의 cfg.yml, val_step6999.json, val_step29999.json
   da3_feedforward/      뷰 수에 따른 feed-forward GS 품질 · VRAM
-  statue_pose/          COLMAP vs DA3 포즈 비교, 단계별 시간
+  statue_pose/          COLMAP vs DA3 디코더/레이 포즈 비교, 단계별 시간
+  statue_3dgs/<run>/    Statue 3DGS 결과 (gsplat 평가, 포즈 보정 평가, 포즈 오차, 학습/테스트 분할)
 scripts/
   01_da3_feedforward/   DA3 출력 확인, feed-forward GS 평가 (실험 과정 1–2)
   02_da3_to_colmap/     DA3 → COLMAP 포맷 변환 파이프라인 (실험 과정 3–5)
   03_pose_eval/         Statue 포즈 정확도 · 시간 비교 (실험 과정 6)
+  04_statue_3dgs/       Statue 포즈 출처별 3DGS 학습 · 평가 (실험 과정 7)
 ```
 
 체크포인트, `.ply`, 데이터셋은 용량 때문에 포함하지 않았습니다.
@@ -195,5 +303,5 @@ scripts/
 ## 다음 단계
 
 - gsplat의 `pose_opt`를 켜서 DA3 포즈 오차를 학습 중에 보정하기
-- Statue 포즈 비교의 좌표계 정렬 문제 해결
 - Truck 251장 기준으로 COLMAP 전처리와 DA3 추론의 end-to-end 시간 비교
+- Statue에서 원인을 나눠 보는 대조 실험: COLMAP 포즈 + DA3 초기 포인트, DA3 포즈 + COLMAP 초기 포인트

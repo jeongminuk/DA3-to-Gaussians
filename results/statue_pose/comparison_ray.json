@@ -1,0 +1,68 @@
+[
+  {
+    "method": "COLMAP",
+    "N": 12,
+    "matched": "12/12",
+    "trans_rmse": 0.018939399865086907,
+    "trans_rmse_pct": 0.08164752509133821,
+    "rot_mean_deg": 0.05330346687386043,
+    "rot_median_deg": 0.04579362633674583,
+    "time_s": 2.804,
+    "note": "auto"
+  },
+  {
+    "method": "DA3_ray",
+    "N": 12,
+    "matched": "12/12",
+    "trans_rmse": 0.27755316546690884,
+    "trans_rmse_pct": 1.1965283590328695,
+    "rot_mean_deg": 0.47916057890090497,
+    "rot_median_deg": 0.42634819790809164,
+    "time_s": 1.196,
+    "note": "ray"
+  },
+  {
+    "method": "COLMAP",
+    "N": 24,
+    "matched": "24/24",
+    "trans_rmse": 0.013895617209567095,
+    "trans_rmse_pct": 0.059903838709757046,
+    "rot_mean_deg": 0.02796187146351962,
+    "rot_median_deg": 0.02430478545981189,
+    "time_s": 7.349,
+    "note": "auto"
+  },
+  {
+    "method": "DA3_ray",
+    "N": 24,
+    "matched": "24/24",
+    "trans_rmse": 0.10940931948899878,
+    "trans_rmse_pct": 0.47166226078110607,
+    "rot_mean_deg": 0.39467282715417507,
+    "rot_median_deg": 0.34081131280544485,
+    "time_s": 1.737,
+    "note": "ray"
+  },
+  {
+    "method": "COLMAP",
+    "N": 50,
+    "matched": "50/50",
+    "trans_rmse": 0.019964655562811486,
+    "trans_rmse_pct": 0.0860673900765702,
+    "rot_mean_deg": 0.036785904196233565,
+    "rot_median_deg": 0.02735707666701813,
+    "time_s": 27.515,
+    "note": "auto"
+  },
+  {
+    "method": "DA3_ray",
+    "N": 50,
+    "matched": "50/50",
+    "trans_rmse": 0.08736166355299244,
+    "trans_rmse_pct": 0.3766150811416572,
+    "rot_mean_deg": 0.33041109451871553,
+    "rot_median_deg": 0.33608547577465187,
+    "time_s": 3.041,
+    "note": "ray"
+  }
+]
