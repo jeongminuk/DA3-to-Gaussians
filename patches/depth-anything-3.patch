@@ -1,0 +1,53 @@
+diff --git a/src/depth_anything_3/cli.py b/src/depth_anything_3/cli.py
+index 316d949..90bd10b 100644
+--- a/src/depth_anything_3/cli.py
++++ b/src/depth_anything_3/cli.py
+@@ -380,7 +380,7 @@ def image(
+         process_res_method=process_res_method,
+         export_feat_layers=export_feat_layers,
+         use_ray_pose=use_ray_pose,
+-        reference_view_strategy=reference_view_strategy,
++        ref_view_strategy=ref_view_strategy,
+         conf_thresh_percentile=conf_thresh_percentile,
+         num_max_points=num_max_points,
+         show_cameras=show_cameras,
+@@ -459,7 +459,7 @@ def images(
+         process_res_method=process_res_method,
+         export_feat_layers=export_feat_layers,
+         use_ray_pose=use_ray_pose,
+-        reference_view_strategy=reference_view_strategy,
++        ref_view_strategy=ref_view_strategy,
+         conf_thresh_percentile=conf_thresh_percentile,
+         num_max_points=num_max_points,
+         show_cameras=show_cameras,
+@@ -546,7 +546,7 @@ def colmap(
+         intrinsics=intrinsics,
+         align_to_input_ext_scale=align_to_input_ext_scale,
+         use_ray_pose=use_ray_pose,
+-        reference_view_strategy=reference_view_strategy,
++        ref_view_strategy=ref_view_strategy,
+         conf_thresh_percentile=conf_thresh_percentile,
+         num_max_points=num_max_points,
+         show_cameras=show_cameras,
+@@ -623,7 +623,7 @@ def video(
+         process_res_method=process_res_method,
+         export_feat_layers=export_feat_layers,
+         use_ray_pose=use_ray_pose,
+-        reference_view_strategy=reference_view_strategy,
++        ref_view_strategy=ref_view_strategy,
+         conf_thresh_percentile=conf_thresh_percentile,
+         num_max_points=num_max_points,
+         show_cameras=show_cameras,
+diff --git a/src/depth_anything_3/utils/visualize.py b/src/depth_anything_3/utils/visualize.py
+index 8fd32bd..f762a14 100644
+--- a/src/depth_anything_3/utils/visualize.py
++++ b/src/depth_anything_3/utils/visualize.py
+@@ -103,7 +103,7 @@ def apply_color_map(
+     x: torch.Tensor,  # " *batch"
+     color_map: str = "inferno",
+ ) -> torch.Tensor:  # "*batch 3"
+-    cmap = matplotlib.cm.get_cmap(color_map)
++    cmap = matplotlib.colormaps[color_map]
+ 
+     # Convert to NumPy so that Matplotlib color maps can be used.
+     mapped = cmap(x.float().detach().clip(min=0, max=1).cpu().numpy())[..., :3]

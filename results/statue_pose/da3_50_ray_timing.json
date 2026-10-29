@@ -1,0 +1,12 @@
+{
+  "n_views": 50,
+  "seconds": 3.041,
+  "source": "ray",
+  "ref_view_strategy": "saddle_balanced",
+  "shape": [
+    50,
+    3,
+    4
+  ],
+  "model_dir": "/workspace/models/DA3NESTED-GIANT-LARGE-1.1"
+}

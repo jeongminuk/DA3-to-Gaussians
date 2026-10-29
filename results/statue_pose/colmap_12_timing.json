@@ -1,0 +1,10 @@
+{
+  "feature": 1.657,
+  "match": 0.472,
+  "mapper": 0.675,
+  "total": 2.804,
+  "device": "auto",
+  "n_input": 12,
+  "n_registered": 12,
+  "colmap_dir": "/workspace/exp/Statue/fs/colmap_12/sparse/0"
+}

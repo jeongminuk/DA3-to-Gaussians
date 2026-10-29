@@ -1,0 +1,12 @@
+{
+  "n_views": 12,
+  "seconds": 1.703,
+  "source": "camera_decoder",
+  "ref_view_strategy": "saddle_balanced",
+  "shape": [
+    12,
+    3,
+    4
+  ],
+  "model_dir": "/workspace/models/DA3NESTED-GIANT-LARGE-1.1"
+}

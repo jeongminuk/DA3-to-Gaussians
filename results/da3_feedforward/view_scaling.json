@@ -1,0 +1,101 @@
+[
+  {
+    "views_requested": 2,
+    "views_processed": 2,
+    "H": 266,
+    "W": 476,
+    "n_gaussians": 253232,
+    "gaussians_per_view": 126616,
+    "peak_vram_gb": 7.42,
+    "wall_time_s": 0.77,
+    "status": "ok"
+  },
+  {
+    "views_requested": 4,
+    "views_processed": 4,
+    "H": 266,
+    "W": 476,
+    "n_gaussians": 506464,
+    "gaussians_per_view": 126616,
+    "peak_vram_gb": 8.0,
+    "wall_time_s": 0.28,
+    "status": "ok"
+  },
+  {
+    "views_requested": 8,
+    "views_processed": 8,
+    "H": 266,
+    "W": 476,
+    "n_gaussians": 1012928,
+    "gaussians_per_view": 126616,
+    "peak_vram_gb": 9.15,
+    "wall_time_s": 0.34,
+    "status": "ok"
+  },
+  {
+    "views_requested": 12,
+    "views_processed": 12,
+    "H": 266,
+    "W": 476,
+    "n_gaussians": 1519392,
+    "gaussians_per_view": 126616,
+    "peak_vram_gb": 9.41,
+    "wall_time_s": 0.46,
+    "status": "ok"
+  },
+  {
+    "views_requested": 16,
+    "views_processed": 16,
+    "H": 266,
+    "W": 476,
+    "n_gaussians": 2025856,
+    "gaussians_per_view": 126616,
+    "peak_vram_gb": 9.77,
+    "wall_time_s": 0.6,
+    "status": "ok"
+  },
+  {
+    "views_requested": 24,
+    "views_processed": 24,
+    "H": 266,
+    "W": 476,
+    "n_gaussians": 3038784,
+    "gaussians_per_view": 126616,
+    "peak_vram_gb": 10.45,
+    "wall_time_s": 0.92,
+    "status": "ok"
+  },
+  {
+    "views_requested": 32,
+    "views_processed": 32,
+    "H": 266,
+    "W": 476,
+    "n_gaussians": 4051712,
+    "gaussians_per_view": 126616,
+    "peak_vram_gb": 11.55,
+    "wall_time_s": 1.25,
+    "status": "ok"
+  },
+  {
+    "views_requested": 48,
+    "views_processed": 48,
+    "H": 266,
+    "W": 476,
+    "n_gaussians": 6077568,
+    "gaussians_per_view": 126616,
+    "peak_vram_gb": 13.9,
+    "wall_time_s": 1.95,
+    "status": "ok"
+  },
+  {
+    "views_requested": 64,
+    "views_processed": 64,
+    "H": 266,
+    "W": 476,
+    "n_gaussians": 8103424,
+    "gaussians_per_view": 126616,
+    "peak_vram_gb": 16.26,
+    "wall_time_s": 2.75,
+    "status": "ok"
+  }
+]

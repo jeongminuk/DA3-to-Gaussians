@@ -1,0 +1,142 @@
+[
+  {
+    "context_views": 2,
+    "H": 266,
+    "W": 476,
+    "n_gaussians": 253232,
+    "peak_vram_gb": 7.44,
+    "infer_time_s": 0.84,
+    "PSNR": 10.047,
+    "SSIM": 0.2691,
+    "LPIPS": 0.8137,
+    "status": "ok"
+  },
+  {
+    "context_views": 4,
+    "H": 266,
+    "W": 476,
+    "n_gaussians": 506464,
+    "peak_vram_gb": 8.16,
+    "infer_time_s": 0.29,
+    "PSNR": 9.052,
+    "SSIM": 0.2359,
+    "LPIPS": 0.906,
+    "status": "ok"
+  },
+  {
+    "context_views": 8,
+    "H": 266,
+    "W": 476,
+    "n_gaussians": 1012928,
+    "peak_vram_gb": 9.31,
+    "infer_time_s": 0.34,
+    "PSNR": 10.185,
+    "SSIM": 0.2801,
+    "LPIPS": 0.9196,
+    "status": "ok"
+  },
+  {
+    "context_views": 12,
+    "H": 266,
+    "W": 476,
+    "n_gaussians": 1519392,
+    "peak_vram_gb": 9.57,
+    "infer_time_s": 0.47,
+    "PSNR": 11.425,
+    "SSIM": 0.313,
+    "LPIPS": 0.8734,
+    "status": "ok"
+  },
+  {
+    "context_views": 16,
+    "H": 266,
+    "W": 476,
+    "n_gaussians": 2025856,
+    "peak_vram_gb": 9.93,
+    "infer_time_s": 0.6,
+    "PSNR": 11.553,
+    "SSIM": 0.3254,
+    "LPIPS": 0.8829,
+    "status": "ok"
+  },
+  {
+    "context_views": 24,
+    "H": 266,
+    "W": 476,
+    "n_gaussians": 3038784,
+    "peak_vram_gb": 10.61,
+    "infer_time_s": 0.92,
+    "PSNR": 11.715,
+    "SSIM": 0.335,
+    "LPIPS": 0.8804,
+    "status": "ok"
+  },
+  {
+    "context_views": 32,
+    "H": 266,
+    "W": 476,
+    "n_gaussians": 4051712,
+    "peak_vram_gb": 11.71,
+    "infer_time_s": 1.25,
+    "PSNR": 11.889,
+    "SSIM": 0.3481,
+    "LPIPS": 0.8778,
+    "status": "ok"
+  },
+  {
+    "context_views": 48,
+    "H": 266,
+    "W": 476,
+    "n_gaussians": 6077568,
+    "peak_vram_gb": 14.06,
+    "infer_time_s": 1.95,
+    "PSNR": 11.939,
+    "SSIM": 0.3548,
+    "LPIPS": 0.8782,
+    "status": "ok"
+  },
+  {
+    "context_views": 64,
+    "H": 266,
+    "W": 476,
+    "n_gaussians": 8103424,
+    "peak_vram_gb": 16.42,
+    "infer_time_s": 2.78,
+    "PSNR": 11.863,
+    "SSIM": 0.3566,
+    "LPIPS": 0.8897,
+    "status": "ok"
+  },
+  {
+    "context_views": 96,
+    "H": 266,
+    "W": 476,
+    "n_gaussians": 12155136,
+    "peak_vram_gb": 21.13,
+    "infer_time_s": 4.62,
+    "PSNR": 11.747,
+    "SSIM": 0.3589,
+    "LPIPS": 0.9028,
+    "status": "ok"
+  },
+  {
+    "context_views": 128,
+    "H": 266,
+    "W": 476,
+    "n_gaussians": 16206848,
+    "peak_vram_gb": 25.84,
+    "infer_time_s": 6.75,
+    "PSNR": 11.663,
+    "SSIM": 0.3576,
+    "LPIPS": 0.9064,
+    "status": "ok"
+  },
+  {
+    "context_views": 180,
+    "status": "OOM"
+  },
+  {
+    "context_views": 219,
+    "status": "OOM"
+  }
+]
