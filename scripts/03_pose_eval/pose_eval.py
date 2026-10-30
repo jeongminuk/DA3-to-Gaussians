@@ -248,8 +248,9 @@ def load_da3_poses(npy_path, names_txt=None, source="camera_decoder",
     for M in ext:
         if M.shape[0] == 3:                      # (3,4) -> (4,4)
             M = np.vstack([M, [0, 0, 0, 1.0]])
-        # Prediction.extrinsics is W2C for BOTH heads: the ray path's
-        # "w2c -> c2w" comment in da3.py is undone by the API's normalization.
+        # Prediction.extrinsics is W2C for BOTH heads. The ray path's
+        # "# w2c -> c2w" comment in da3.py is reversed: get_extrinsic_from_camray
+        # returns C2W (T = mean ray origin), and affine_inverse turns it into W2C.
         # Reading the ray output as C2W was the cause of the ~171 deg error.
         Rc2w, center = w2c_to_c2w(M[:3, :3], M[:3, 3])
         if to_opencv_flip is not None:
