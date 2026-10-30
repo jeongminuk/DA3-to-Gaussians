@@ -1,4 +1,4 @@
-# Advanced 3D Gaussian Splatting
+# DA3-to-Gaussians
 
 **COLMAP 없이 3D Gaussian Splatting 학습하기: Depth Anything 3 + gsplat**
 
